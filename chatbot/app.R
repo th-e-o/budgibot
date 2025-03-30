@@ -7,4 +7,3 @@ source("~/work/budgibot/chatbot/server_chatbot.R")  # Charger la logique du serv
 readRenviron("~/work/budgibot/chatbot/.Renviron")
 
 shinyApp(ui = ui, server = server)
-

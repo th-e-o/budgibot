@@ -343,12 +343,25 @@ ui <- fluidPage(
     tags$script(HTML("Shiny.addCustomMessageHandler('jsCode', function(message) {
       eval(message.code);
     });")),
+  
+  tags$script(HTML("
+    Shiny.addCustomMessageHandler('appendToChat', function(msg) {
+      var chatHistory = $('#chatBox');
+      var message = '<div class=\"chat-bubble-container bot-message-container\">' +
+                      '<div class=\"chat-sender\">BudgiBot</div>' +
+                      '<div class=\"chat-message bot-message\">' + msg.content.replace(/\\n/g, '<br>') + '</div>' +
+                    '</div>';
+      chatHistory.append(message);
+      chatHistory.scrollTop(chatHistory[0].scrollHeight);
+    });
+  ")),
+  
   # 💬 Chat + 📊 Excel RH
   fluidRow(
     column(
       width = 6,
       style = "padding: 20px;",
-      h3("💬 BudgiBot"),
+      h3("BudgiBot"),
       div(id = "chatBox", class = "chat-container", style = "height: 600px; overflow-y: auto;",
           uiOutput("chat_history")
       ),
@@ -370,7 +383,7 @@ ui <- fluidPage(
     column(
       width = 6,
       style = "padding: 20px;",
-      h3("📊 Mesures catégorielles"),
+      h3("Mesures catégorielles"),
       mod_mesures_cat_ui("cat1")
     )
   )

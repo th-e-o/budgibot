@@ -1,3 +1,6 @@
+library(stringr)
+
+
 mod_outil_bpss_ui <- function(id) {
   ns <- NS(id)
   

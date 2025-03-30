@@ -1,7 +1,12 @@
 # server.R
 
 server <- function(input, output, session) {
-  mod_mesures_cat_server("cat1")
+  mod_mesures_cat_server("cat1", on_analysis_summary = function(summary) {
+    messages <- chat_history()
+    messages <- append(messages, list(list(role = "assistant", content = summary)))
+    chat_history(messages)
+    session$sendCustomMessage(type = 'scrollToBottom', message = list())
+  })
   mod_outil_bpss_server("bpss1")
   
   dernier_fichier_contenu <- reactiveVal(NULL)

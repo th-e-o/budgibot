@@ -17,7 +17,7 @@ mod_mesures_cat_ui <- function(id) {
 
 
 # Server module
-mod_mesures_cat_server <- function(id) {
+mod_mesures_cat_server <- function(id, on_analysis_summary = NULL) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     library(readxl)
@@ -52,8 +52,15 @@ mod_mesures_cat_server <- function(id) {
     # 3️⃣ Lecture de la feuille sélectionnée
     observeEvent(input$selected_sheet, {
       req(rv_path(), input$selected_sheet)
+      
       df <- read_excel(rv_path(), sheet = input$selected_sheet, skip = 4)
       rv_table(as.data.frame(df))
+      
+      # ⏩ Appel de la fonction de résumé
+      if (!is.null(on_analysis_summary)) {
+        summary <- analyser_feuille_excel(df, sheet_name = input$selected_sheet)
+        on_analysis_summary(summary)
+      }
     })
     
     # 4️⃣ Affichage reactable
@@ -87,9 +94,6 @@ mod_mesures_cat_server <- function(id) {
       )
     })
     
-    
-    
-    
     # 5️⃣ Edition complète en plein écran simulé
     observeEvent(input$open_full_editor, {
       showModal(modalDialog(
@@ -104,7 +108,6 @@ mod_mesures_cat_server <- function(id) {
         style = "width: 95vw; max-width: none;"
       ))
     })
-    
     
     output$hot_table <- rhandsontable::renderRHandsontable({
       req(rv_table())

@@ -10,14 +10,19 @@ library(future)
 library(mime)
 library(reticulate)
 library(callr)
+library(reactable)
 
 source("~/work/budgibot/chatbot/helpers/api_mistral.R")
 source("~/work/budgibot/chatbot/helpers/llm_utils.R")
 source("~/work/budgibot/chatbot/helpers/ui_helpers.R")
 source("~/work/budgibot/chatbot/helpers/server_utils.R")
+source("~/work/budgibot/chatbot/helpers/excel_analysis.R")
 
 source("~/work/budgibot/chatbot/modules/mod_mesures_cat_combo.R")
 source("~/work/budgibot/chatbot/modules/mod_outil_bpss.R")
+
+
+
 
 
 # Configuration
